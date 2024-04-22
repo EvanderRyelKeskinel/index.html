@@ -7,9 +7,12 @@ app = Flask(__name__)
 
 @app.route("/")
 def home():
-    user = request.args.get("user")
-    if user == None:
+    name = request.args.get("user")
+    if name == None:
         return render_template("index.html")
-    return "Hello" + user
+    elif name == "bob":
+        return "Hello " + name
+    else: 
+        return "User not recognized"
     
 
