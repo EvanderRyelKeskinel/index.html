@@ -1,25 +1,32 @@
-
 from flask import Flask, render_template, request
 
 app = Flask(__name__)
-
-
 
 @app.route("/", methods=["GET", "POST"])
 def home():
     if request.method == "GET":
         return render_template("index.html")
     else:
-        name = request.form["us"]
-        pw = request.form["pw"]
-
-        if name == None:
-            return render_template("index.html")
-        elif pw != None and name == "bob" and pw == "123":
-            return "Hello " + name
-        else: 
-            return "User not recognized"
+        f = open("login.txt", "r")
+        us = f.readline().strip()
+        pw = f.readline().strip()
+        f.close()
         
-@app.route("/signup")
+        if us == request.form["us"] and pw == request.form["pw"]:
+            return "hello" + us
+        else:
+            return "User not recognized"
+    
+        
+@app.route("/signup", methods=["GET","POST"])
 def signup():
-    return "signup"
+    if request.method == "GET":
+        return render_template("signup.html")
+    else:
+        f = open("login.txt", "w")
+        f.write(request.form["us"])
+        f.write("\n")
+        f.write(request.form["pw"])
+        f.close()
+
+        return "signup successful"
