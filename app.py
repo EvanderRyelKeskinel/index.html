@@ -5,16 +5,21 @@ app = Flask(__name__)
 
 
 
-@app.route("/")
+@app.route("/", methods=["GET", "POST"])
 def home():
-    name = request.args.get("us")
-    pw = request.args.get("pw")
-
-    if name == None:
+    if request.method == "GET":
         return render_template("index.html")
-    elif pw != None and name == "bob" and pw == "123":
-        return "Hello " + name
-    else: 
-        return "User not recognized"
-    
+    else:
+        name = request.form["us"]
+        pw = request.form["pw"]
 
+        if name == None:
+            return render_template("index.html")
+        elif pw != None and name == "bob" and pw == "123":
+            return "Hello " + name
+        else: 
+            return "User not recognized"
+        
+@app.route("/signup")
+def signup():
+    return "signup"
